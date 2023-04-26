@@ -95,13 +95,14 @@ public class MainActivity extends AppCompatActivity
                             timeRemaining = millisUntilFinished;
 
                             timerBar.setProgress(percentage);
-                            long minutes = (millisUntilFinished / 1000) / 60;
-                            long seconds = (millisUntilFinished / 1000) % 60;
+                            long minutes = (remainingTime) / 60;
+                            long seconds = (remainingTime) % 60;
                             timerText.setText(String.format("%02d:%02d", minutes, seconds));
                         }
 
                         public void onFinish() {
                             phase.setText("Workout Complete!");
+                            timerText.setText(String.format("%02d:%02d", 0, 0));
 
                         }
 
