@@ -81,7 +81,7 @@ public class MainActivity extends AppCompatActivity
                             int totalTime = LongToInt(totalDuration) / 1000;
                             int percentage = 100 * remainingTime / totalTime;
                             int checkPhase1 = remainingTime % LongToInt(phaseTotaled);
-                            int checkPhase2 = (remainingTime - LongToInt(restTime)) % LongToInt(phaseTotaled);
+                            int checkPhase2 = (remainingTime - LongToInt(restTime / 1000)) % LongToInt(phaseTotaled);
                             if (checkPhase1 == 0)
                             {
                                 phase.setText("Workout!");
@@ -121,6 +121,7 @@ public class MainActivity extends AppCompatActivity
                     startButton.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
+                            phase.setText("Workout!");
                             workoutTimer.start();
                         }
                     });
