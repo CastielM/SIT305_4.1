@@ -5,6 +5,9 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.media.Ringtone;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.util.Log;
@@ -86,10 +89,12 @@ public class MainActivity extends AppCompatActivity
                             if (checkPhase1 == 0)
                             {
                                 phase.setText("Workout!");
+                                playNotification();
                             }
                             if (checkPhase2 == 0)
                             {
                                 phase.setText("Rest!");
+                                playNotification();
                             }
 
                             timeRemaining = millisUntilFinished;
@@ -103,6 +108,8 @@ public class MainActivity extends AppCompatActivity
                         public void onFinish() {
                             phase.setText("Workout Complete!");
                             timerText.setText(String.format("%02d:%02d", 0, 0));
+                            timerBar.setProgress(0);
+
 
                         }
 
@@ -123,7 +130,7 @@ public class MainActivity extends AppCompatActivity
                     startButton.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            //phase.setText("Workout!");
+
                             workoutTimer.start();
                         }
                     });
@@ -145,6 +152,12 @@ public class MainActivity extends AppCompatActivity
                 }
             }
 
+            public void playNotification()
+            {
+                Uri notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+                Ringtone r = RingtoneManager.getRingtone(getApplicationContext(), notification);
+                r.play();
+            }
 
         });
 
