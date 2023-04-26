@@ -5,11 +5,15 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.media.MediaPlayer;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.os.VibrationEffect;
+import android.os.Vibrator;
 import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -47,7 +51,7 @@ public class MainActivity extends AppCompatActivity
         restDuration = findViewById(R.id.restDuration);
         repetitions = findViewById(R.id.repetitions);
         stopButton.setText("Stop");
-        startButton.setText("Start Workout");
+        startButton.setText("Start");
         configureButton.setText("Set workout");
         timerBar.setProgress(100);
         timerText.setText(String.format("%02d:%02d", 0, 0));
@@ -90,11 +94,13 @@ public class MainActivity extends AppCompatActivity
                             {
                                 phase.setText("Workout!");
                                 playNotification();
+                                vibrate();
                             }
                             if (checkPhase2 == 0)
                             {
                                 phase.setText("Rest!");
                                 playNotification();
+                                vibrate();
                             }
 
                             timeRemaining = millisUntilFinished;
@@ -109,6 +115,8 @@ public class MainActivity extends AppCompatActivity
                             phase.setText("Workout Complete!");
                             timerText.setText(String.format("%02d:%02d", 0, 0));
                             timerBar.setProgress(0);
+                            MediaPlayer mediaPlayer = MediaPlayer.create(MainActivity.this, R.raw.cheering_sound_effect);
+                            mediaPlayer.start();
 
 
                         }
@@ -121,6 +129,7 @@ public class MainActivity extends AppCompatActivity
                     stopButton.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
+
                             workoutTimer.cancel();
                         }
                     });
@@ -137,6 +146,7 @@ public class MainActivity extends AppCompatActivity
                 }
             }
 
+            //method to convert Long to Int
             public int LongToInt(long value)
             {
                 long l = value;
@@ -144,6 +154,7 @@ public class MainActivity extends AppCompatActivity
                 return i;
             }
 
+            //method to hide keyboard
             public void hideKeyboard(View view) {
                 try {
                     InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -152,12 +163,21 @@ public class MainActivity extends AppCompatActivity
                 }
             }
 
+            //method to play a notification sound as set in the phone
             public void playNotification()
             {
                 Uri notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
                 Ringtone r = RingtoneManager.getRingtone(getApplicationContext(), notification);
                 r.play();
             }
+
+            //not totally sure if this actually works since I can't test it in the emulator.
+            public void vibrate()
+            {
+                Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+                v.vibrate(500);
+            }
+
 
         });
 
